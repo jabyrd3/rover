@@ -1,5 +1,6 @@
 'use strict';
-window.onload = function () {
+/* globals _, engine */
+window.initGame = function () {
     var command =
         '5 3 \n 1 1 e\n rfrfrfrf\n 3 2 N \n frrffllffrrfll\n 0 3 w\n LLFFFLFLFL';
     // this function parses the input string so that we have useful names/parameters
@@ -52,66 +53,24 @@ window.onload = function () {
         // !== write robot logic here ==!
 
         //leave the below line in place
-        placeRobos(robos);
+        // placeRobos(robos);
+        _.each(robos, function (robo) {
+            robo.x += 1;
+        });
+        return robos;
     };
     // mission summary function
     var missionSummary = function (robos) {
         // task #3
         // summarize the mission and inject the results into the DOM elements referenced in readme.md
     };
-    // ~~~~~~!!!! please do not edit any code below this comment !!!!!!~~~~~~~;
-    var canvas = document.getElementById('playfield')
-        .getContext('2d'),
-        width = document.getElementById('playfield')
-        .width * 2,
-        height = document.getElementById('playfield')
-        .height * 2,
-        fontSize = 18,
-        gridText = [],
-        gameWorld = [],
-        gridText = [],
-        gameWorld = [];
-    canvas.font = 'bold ' + fontSize + 'px monospace';
-    canvas.fillStyle = 'black';
-    canvas.textAlign = 'center';
-    var genworld = function (parsedCommand) {
-        //build init world array
-        gameWorld = [];
-        var bounds = parsedCommand.bounds,
-            robos = parsedCommand.robos;
-        var row = [];
-        for (var i = 0; i < bounds[0]; i++) {
-            row.push('.');
-        }
-        for (var i = 0; i < bounds[1]; i++) {
-            var test = [].concat(row);
-            gameWorld.push(test);
-        }
-        placeRobos(parsedCommand.robos);
-        render(gameWorld, parsedCommand.robos);
-        tickRobos(robos);
-        window.setTimeout(function () {
-            genworld(parsedCommand);
-        }, 1000);
+
+    // leave this alone please
+    window.rover = {
+        parse: parseInput,
+        tick: tickRobos,
+        summary: missionSummary,
+        command: command
     };
-    var placeRobos = function (robos) {
-        for (var i in robos) {
-            var robo = robos[i];
-            var activeRow = gameWorld[robo.y];
-            if (activeRow) {
-                activeRow[robo.x] = robo.o;
-            }
-        }
-    };
-    //render block
-    var render = function (gameWorld, robos) {
-        canvas.clearRect(0, 0, width, height);
-        for (var i = 0; i < gameWorld.length; i++) {
-            var blob = gameWorld[i].join('');
-            canvas.fillText(blob, 250, i * fontSize + fontSize);
-        }
-    };
-    // wireup init functions for display
-    genworld(parseInput(command));
 };
 
