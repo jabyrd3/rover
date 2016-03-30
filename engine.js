@@ -87,8 +87,8 @@ window.onload = function () {
                 .innerText = 'your solution was incorrect';
         }
         if (window.doneTrigger) {
-            console.log('fire doneTrigger: ', successWorld, _.flatten(lastworld));
-            window.doneTrigger(successWorld, lastworld);
+            console.log('fire doneTrigger: ', successWorld, lastworld);
+            window.doneTrigger(successWorld, _.flatten(lastworld));
         }
     };
     // wireup init functions for display
