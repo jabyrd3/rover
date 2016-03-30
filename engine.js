@@ -61,7 +61,7 @@ window.onload = function () {
                 } else {
                     genworld(parsedCommand, true);
                 }
-            }, 1000);
+            }, 124);
         }
         return gameWorld;
     };
@@ -77,8 +77,6 @@ window.onload = function () {
     // test world state for succesful test
     runTests = function (lastworld) {
         console.log('runtests: ');
-        console.log('doneTrigger', window.doneTrigger.toString());
-        console.log(window.doneTrigger.toString());
         var successWorld = ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 's', '.', '.', '.', '.', '.', '.', '.', '.', '.'];
         if (!window.doneTrigger) {
             if (_.isEqual(_.flatten(lastworld), successWorld)) {
