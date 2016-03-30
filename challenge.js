@@ -1,5 +1,9 @@
 'use strict';
 /* globals _, engine */
+// stub window for serverside check
+if (!window) {
+    window = {};
+};
 window.initGame = function () {
     // you're really better off leaving this line alone, i promise.
     var command =

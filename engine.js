@@ -1,5 +1,8 @@
 // don't touch this at all.
 /* globals _ */
+if (!window) {
+    window = {};
+}
 window.onload = function () {
     window.initGame();
     var canvas = document.getElementById('playfield')
@@ -63,6 +66,7 @@ window.onload = function () {
     };
     //render block
     var render = function (gameWorld) {
+        console.log('render', gameWorld);
         canvas.clearRect(0, 0, width, height);
         for (var i = 0; i < gameWorld.length; i++) {
             var blob = gameWorld[i].join('');
@@ -71,6 +75,7 @@ window.onload = function () {
     };
     // test world state for succesful test
     runTests = function (lastworld) {
+        console.log('runtests: ');
         var successWorld = ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 's', '.', '.', '.', '.', '.', '.', '.', '.', '.'];
         if (_.isEqual(_.flatten(lastworld), successWorld)) {
             document.getElementById('test')
@@ -79,6 +84,10 @@ window.onload = function () {
         } else {
             document.getElementById('test')
                 .innerText = 'your solution was incorrect';
+        }
+        if (window.doneTrigger) {
+            console.log('fire doneTrigger: ', successWorld, lastworld);
+            window.doneTrigger(successWorld, lastworld);
         }
     };
     // wireup init functions for display
