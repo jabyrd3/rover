@@ -14,9 +14,9 @@ A robot instruction is a string of the letters “L”, “R”, and “F” whi
 - Right : the robot turns right 90 degrees and remains on the current grid point. 
 - Forward : the robot moves forward one grid point in the direction of the current orientation and maintains the same orientation. 
 
-The direction North corresponds to the direction from grid point (x, y) to grid point (x, y+1). There is also a possibility that additional command types maybe required in the future and provision should be made for this. 
+The direction North corresponds to the direction from grid point (x, y) to grid point (x, y-1). There is also a possibility that additional command types maybe required in the future and provision should be made for this. 
 
-Since the grid is rectangular and bounded, a robot that moves “off” an edge of the grid is lost forever. However, lost robots leave a robot “scent” that prohibits future robots from dropping off the world at the same grid point. The scent is left at the last grid position the robot occupied before disappearing over the edge. An instruction to  move “off” the world from a grid point from which a robot has been previously lost is  simply ignored by the current robot.
+Since the grid is rectangular and bounded, a robot that moves “off” an edge of the grid is lost forever. However, lost robots leave a warning tile that prohibits future robots from dropping off the world at the same grid point. The warning tile is left at the last grid position the robot occupied before disappearing over the edge. An instruction to  move “off” the world from a grid point from which a robot has been previously lost is simply ignored by the current robot.
 
 ## Input 
 
@@ -54,9 +54,9 @@ This object will be used in the rest of the tasks.
 ### #2 Write rover driving logic
 On line 36 there is a function called 'tickRobos'. The input is the robots array from the parsed command you wrote in task #1.
 
-This function needs to deal with a single unit of time in the robots command sequence. You need to edit each robot in the input robos array as if it just executed the first command (left-most character) in it's command stack. You will need to edit x/y coordinates, orientation values, and finally remove the command from the top of the command stack.
+This function needs to deal with a single unit of time in the robots command sequence. You need to edit each robot in the input robos array as if it just executed the first command (left-most character) in it's command stack. You will need to edit x/y coordinates, orientation values, and finally remove the command from the top of the command stack. Return the edited robot object at the end of this function so the gameboard gets rendered properly.
 
-If you've written this correctly you should be able to visit the index.html file in a browser and watch the robots follow the behavior you just wrote for them.
+If you've written this correctly you should be able to visit the index.html file in a browser and watch the robots follow the behavior you just wrote for them. There is also a simple acceptance test to verify that you've completed the task according to the rules. *If you change the initial command this test will fail and you won't know if you've written successful business logic.*
 
 ### #3 Summarize mission
 Edit your tickRobos function to call 'missionSummary' and pass the final robots array to it when the robot with the longest original command completes its command stack or all robots have left the playfield.
@@ -64,7 +64,7 @@ Edit your tickRobos function to call 'missionSummary' and pass the final robots 
 In the missionSummary function, you need to populate 2 DOM elements with data about the mission. The first DOM element is an unordered list with the ID 'robots'. Make a list item for each surviving robot and include the robots details in the following format:
 Position: 3, 5 | Orientation: W
 
-The second DOM element has an ID of 'lostRobots'. I need you to build a list item for every robot and inject it into the unordered list in the same format as above, but also include any unexecuted instructions and the instruction that killed it.
+The second DOM element has an ID of 'lostRobots'. I need you to build a list item for every robot and inject it into the unordered list as a string similar to: 'I died going S from coordinates: 1, 3', where S is the final orientation and 1, 3 is the last on-world location of the robot (aka the warning tile).
 
 ### Caveats, rules
 
