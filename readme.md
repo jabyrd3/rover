@@ -68,4 +68,4 @@ The second DOM element has an ID of 'lostRobots'. I need you to build a list ite
 
 ### Caveats, rules
 
-Please let us know if any directions don't make sense. Feel free to ask questions. I threw this together today really quickly and there's definitely edge cases I haven't considered. You can edit anything in challenge.js above line 62 (for instance: creating a variable to stash dead rovers).
+Please let us know if any directions don't make sense. Feel free to ask questions. I threw this together today really quickly and there's definitely edge cases I haven't considered. You can edit anythign in challenge.js, but you might break things if you edit function names or the window bindings at the end of the file. Refresh early, refresh often.
