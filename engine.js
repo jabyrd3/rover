@@ -76,7 +76,10 @@ window.onload = function () {
     };
     // test world state for succesful test
     runTests = function (lastworld) {
+
         console.log('runtests: ');
+        console.log('doneTrigger', window.doneTrigger.toString());
+        console.log(window.doneTrigger.toString());
         var successWorld = ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 's', '.', '.', '.', '.', '.', '.', '.', '.', '.'];
         if (_.isEqual(_.flatten(lastworld), successWorld)) {
             document.getElementById('test')
