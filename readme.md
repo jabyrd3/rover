@@ -20,7 +20,7 @@ Since the grid is rectangular and bounded, a robot that moves “off” an edge 
 
 ## Input 
 
-The first line of input is the upper-right coordinates of the rectangular world, the lower-left coordinates are assumed to be 0, 0. 
+The first line of input is the upper-right coordinates of the rectangular world, the upper-left coordinates are assumed to be 0, 0. 
 
 The remaining input consists of a sequence of robot positions and instructions (two lines per robot). 
 
