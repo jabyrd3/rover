@@ -4,6 +4,7 @@ if (!window) {
     window = {};
 }
 window.onload = function () {
+    console.log('onload called');
     window.initGame();
     var canvas = document.getElementById('playfield')
         .getContext('2d'),

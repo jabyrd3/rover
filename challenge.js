@@ -5,6 +5,7 @@ if (!window) {
     window = {};
 };
 window.initGame = function () {
+    console.log('initgame');
     // you're really better off leaving this line alone, i promise.
     var command =
         '5 3 \n 1 1 s\n ffffff\n 2 1 w \n flfffffrrfffffff\n 0 3 w\n LLFFFLFLFL';
@@ -48,6 +49,7 @@ window.initGame = function () {
     // this function replaces the robos after they complete one instruction
     // from their commandset
     var tickRobos = function (robos) {
+        console.log('tickrobos');
         // 
         // task #2
         //
