@@ -1,4 +1,5 @@
-// ~~~~~~!!!! please do not edit any code below this comment !!!!!!~~~~~~~;
+// don't touch this at all.
+/* globals _ */
 window.onload = function () {
     window.initGame();
     var canvas = document.getElementById('playfield')
@@ -15,16 +16,16 @@ window.onload = function () {
     canvas.font = 'bold ' + fontSize + 'px monospace';
     canvas.fillStyle = 'black';
     canvas.textAlign = 'center';
-    var genworld = function (parsedCommand) {
+    var genworld = function (parsedCommand, renderflag, world) {
         //build init world array
         gameWorld = [];
         var bounds = parsedCommand.bounds,
             robos = parsedCommand.robos;
         var row = [];
-        for (var i = 0; i < bounds[0]; i++) {
+        for (var i = 0; i <= bounds[0]; i++) {
             row.push('.');
         }
-        for (var i = 0; i < bounds[1]; i++) {
+        for (var i = 0; i <= bounds[1]; i++) {
             var test = [].concat(row);
             gameWorld.push(test);
         }
@@ -37,22 +38,50 @@ window.onload = function () {
                 }
             }
         };
+        parsedCommand.robos = window.rover.tick(robos);
         placeRobos(parsedCommand.robos);
-        render(gameWorld, parsedCommand.robos);
-        var movedRobos = window.rover.tick(robos);
-        window.setTimeout(function () {
-            genworld(parsedCommand);
-        }, 1000);
+        if (renderflag) {
+            render(gameWorld, parsedCommand.robos);
+        }
+        if (renderflag) {
+            window.setTimeout(function () {
+                var finished = false;
+                _.each(parsedCommand.robos, function (robo) {
+                    if (robo.command.length !== 0 && finished === false) {
+                        finished = true;
+                    }
+                });
+                if (finished === false) {
+                    window.rover.summary(parsedCommand.robos);
+                    runTests(gameWorld);
+                } else {
+                    genworld(parsedCommand, true);
+                }
+            }, 1000);
+        }
+        return gameWorld;
     };
     //render block
-    var render = function (gameWorld, robos) {
+    var render = function (gameWorld) {
         canvas.clearRect(0, 0, width, height);
         for (var i = 0; i < gameWorld.length; i++) {
             var blob = gameWorld[i].join('');
             canvas.fillText(blob, 250, i * fontSize + fontSize);
         }
     };
+    // test world state for succesful test
+    runTests = function (lastworld) {
+        var successWorld = ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 's', '.', '.', '.', '.', '.', '.', '.', '.', '.'];
+        if (_.isEqual(_.flatten(lastworld), successWorld)) {
+            document.getElementById('test')
+                .innerText =
+                'your business logic is correct, which means you beat task #1 and #2';
+        } else {
+            document.getElementById('test')
+                .innerText = 'your solution was incorrect';
+        }
+    };
     // wireup init functions for display
-    genworld(window.rover.parse(window.rover.command));
+    genworld(window.rover.parse(window.rover.command), true);
 };
 
