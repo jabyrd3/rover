@@ -68,4 +68,4 @@ The second DOM element has an ID of 'lostRobots'. I need you to build a list ite
 
 ### Caveats, rules
 
-Please let us know if any directions don't make sense. Feel free to ask questions. I threw this together today really quickly and there's definitely edge cases I haven't considered. You can edit anythign in challenge.js, but you might break things if you edit function names or the window bindings at the end of the file. Refresh early, refresh often.
+Please let me know if any directions don't make sense (jabyrd3@gmail.com). Feel free to ask questions. Feel free to break this up and hack it to hell to solve it if you want. Cheating is allowed and encouraged. Have fun.
