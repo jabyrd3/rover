@@ -61,7 +61,7 @@ window.onload = function () {
                 } else {
                     genworld(parsedCommand, true);
                 }
-            }, 124);
+            }, 400);
         }
         return gameWorld;
     };
