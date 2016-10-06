@@ -79,7 +79,7 @@ window.onload = function () {
         console.log('runtests: ');
         var successWorld = ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 's', '.', '.', '.', '.', '.', '.', '.', '.', '.'];
         if (!window.doneTrigger) {
-            if (_.isEqual(_.flatten(lastworld), successWorld)) {
+            if (_.isEqual(_.flatten(lastworld).map(toLowerCase), successWorld)) {
                 document.getElementById('test')
                     .innerText =
                     'your business logic is correct, which means you beat task #1 and #2';
