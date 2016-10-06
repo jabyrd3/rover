@@ -56,7 +56,7 @@ On line 36 there is a function called 'tickRobos'. The input is the robots array
 
 This function needs to deal with a single unit of time in the robots command sequence. You need to edit each robot in the input robos array as if it just executed the first command (left-most character) in it's command stack. You will need to edit x/y coordinates, orientation values, and finally remove the command from the top of the command stack. Return the edited robot object at the end of this function so the gameboard gets rendered properly.
 
-If you've written this correctly you should be able to visit the index.html file in a browser and watch the robots follow the behavior you just wrote for them. There is also a simple acceptance test to verify that you've completed the task according to the rules. *If you change the initial command this test will fail and you won't know if you've written successful business logic.*
+If you've written this correctly you should be able to visit the index.html file in a browser and watch the robots follow the behavior you just wrote for them. There is also a simple acceptance test to verify that you've completed the task according to the rules. *If you change the initial command this test will fail and you won't know if you've written successful business logic, and more importantly my automated test checker won't pass you.*
 
 ### #3 Summarize mission
 Edit your tickRobos function to call 'missionSummary' and pass the final robots array to it when the robot with the longest original command completes its command stack or all robots have left the playfield.
@@ -69,3 +69,5 @@ The second DOM element has an ID of 'lostRobots'. I need you to build a list ite
 ### Caveats, rules
 
 Please let me know if any directions don't make sense (jabyrd3@gmail.com). Feel free to ask questions. Feel free to break this up and hack it to hell to solve it if you want. Cheating is allowed and encouraged. Have fun.
+
+Please don't inject your pet module-loader or unit test framework into this. I just want to see you solve the business logic problem, and this test will be checked by an automated tool that expects the global state of the browser to be a certain way. I can't guarante that require/browserify/jspm/whatever isn't going to break that, which makes it less likely that i'll pull down your solution to read it.
