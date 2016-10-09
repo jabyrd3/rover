@@ -1,55 +1,54 @@
 'use strict';
-/* globals _, engine */
 // stub window for serverside check
 if (!window) {
-    window = {};
-};
+  window = {};
+}
 window.initGame = function () {
-    console.log('initgame');
+  console.log('initgame');
     // you're really better off leaving this line alone, i promise.
-    var command =
+  const command =
         '5 3 \n 1 1 s\n ffffff\n 2 1 w \n flfffffrrfffffff\n 0 3 w\n LLFFFLFLFL';
 
     // this function parses the input string so that we have useful names/parameters
     // to define the playfield and robots for subsequent steps
-    var parseInput = function (input) {
+  const parseInput = (input) => {
         //
         // task #1 
         //
-        // replace the 'parsed' var below to be the string 'command' parsed into an object we can pass to genworld();
+        // replace the 'parsed' variable below to be the string 'command' parsed into an object we can pass to genworld();
         // genworld expects an input object in the form { 'bounds': [3, 8], 'robos': [{x: 2, y: 1, o: 'W', command: 'rlrlff'}]}
         // where bounds represents the top right corner of the plane and each robos object represents the
         // x,y coordinates of a robot and o is a string representing their orientation. a sample object is provided below
         //
 
         // replace this with a correct object
-        var parsed = {
-            bounds: [20, 20],
-            robos: [{
-                x: 2,
-                y: 1,
-                o: 'W',
-                command: 'rlrlrff'
-            }, {
-                x: 12,
-                y: 10,
-                o: 'E',
-                command: 'fffffffffff'
-            }, {
-                x: 18,
-                y: 8,
-                o: 'N',
-                command: 'frlrlrlr'
-            }]
-        };
-
-        return parsed;
+    let parsed = {
+      bounds: [20, 20],
+      robos: [{
+        x: 2,
+        y: 1,
+        o: 'W',
+        command: 'rlrlrff'
+      }, {
+        x: 12,
+        y: 10,
+        o: 'E',
+        command: 'fffffffffff'
+      }, {
+        x: 18,
+        y: 8,
+        o: 'N',
+        command: 'frlrlrlr'
+      }]
     };
+
+    return parsed;
+  };
 
     // this function replaces the robos after they complete one instruction
     // from their commandset
-    var tickRobos = function (robos) {
-        console.log('tickrobos');
+  const tickRobos = (robos) => {
+    console.log('tickrobos');
         // 
         // task #2
         //
@@ -75,23 +74,23 @@ window.initGame = function () {
 
         // return the mutated robos object from the input to match the new state
         // return ???;
-    };
+  };
     // mission summary function
-    var missionSummary = function (robos) {
+  const missionSummary = (robos)=> {
         //
         // task #3
         //
         // summarize the mission and inject the results into the DOM elements referenced in readme.md
         //
-        return;
-    };
+    return;
+  };
 
     // leave this alone please
-    window.rover = {
-        parse: parseInput,
-        tick: tickRobos,
-        summary: missionSummary,
-        command: command
-    };
+  window.rover = {
+    parse: parseInput,
+    tick: tickRobos,
+    summary: missionSummary,
+    command: command
+  };
 };
 
