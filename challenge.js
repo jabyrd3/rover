@@ -1,6 +1,6 @@
 'use strict';
 /* globals _, engine */
-window.initGame = function () {
+window.initGame = () => {
   const command = '5 3 \n 1 1 s\n ffffff\n 2 1 w \n flfffffrrfffffff\n 0 3 w\n LLFFFLFLFL';
 
   let bounds = [],
@@ -11,72 +11,71 @@ window.initGame = function () {
       this.y = vals.y;
       this.o = vals.o;
       this.command = vals.command;
-      this.report = function () {
+      this.report = () => {
         return 'I died going ' + this.o.toUpperCase() + ' from coordinates: ' + this.x + ', ' + this.y;
       };
     },
-    Robo:function (commandValues) {
-      let self = this;
+    Robo: function (commandValues) {
       this.x = commandValues.x;
       this.y = commandValues.y;
       this.o = commandValues.o.toLowerCase();
       this.command = commandValues.command.toLowerCase();
-      this.report = function () {
-        return 'Position: ' + self.x + ', ' + self.y + ' | ' + 'Orientation: ' + self.o.toUpperCase();
+      this.report = () => {
+        return `Position: ${this.x}, ${this.y} | Orientation: ${this.o.toUpperCase()}`;
       };
-      this.ticked = function () {
-        self.command = _.tail(self.command);
+      this.ticked = () => {
+        this.command = _.tail(this.command);
       };
-      this.forward = function () {
-        switch (self.o) {
+      this.forward = () => {
+        switch (this.o) {
         case 'n':
-          self.y -= 1;
+          this.y -= 1;
           break;
         case 'e':
-          self.x += 1;
+          this.x += 1;
           break;
         case 's':
-          self.y += 1;
+          this.y += 1;
           break;
         case 'w':
-          self.x -= 1;
+          this.x -= 1;
           break;
         }
-        self.ticked();
+        this.ticked();
       };
-      this.rr = function () {
-        switch (self.o) {
+      this.rr = () => {
+        switch (this.o) {
         case 'n':
-          self.o = 'e';
+          this.o = 'e';
           break;
         case 'e':
-          self.o = 's';
+          this.o = 's';
           break;
         case 's':
-          self.o = 'w';
+          this.o = 'w';
           break;
         case 'w':
-          self.o = 'n';
+          this.o = 'n';
           break;
         }
-        self.ticked();
+        this.ticked();
       };
-      this.rl = function () {
-        switch (self.o) {
+      this.rl = () => {
+        switch (this.o) {
         case 'n':
-          self.o = 'w';
+          this.o = 'w';
           break;
         case 'e':
-          self.o = 'n';
+          this.o = 'n';
           break;
         case 's':
-          self.o = 'e';
+          this.o = 'e';
           break;
         case 'w':
-          self.o = 's';
+          this.o = 's';
           break;
         }
-        self.ticked();
+        this.ticked();
       };
     }
   };
@@ -119,20 +118,19 @@ window.initGame = function () {
 
   const parseInput = function (input) {
 
-        //
-        // task #1 
-        //
-        // replace the 'parsed' variable below to be the string 'command' parsed into an object we can pass to genworld();
-        // genworld expects an input object in the form { 'bounds': [3, 8], 'robos': [{x: 2, y: 1, o: 'W', command: 'rlrlff'}]}
-        // where bounds represents the top right corner of the plane and each robos object represents the
-        // x,y coordinates of a robot and o is a string representing their orientation. a sample object is provided below
-        //
+    //
+    // task #1 
+    //
+    // replace the 'parsed' variable below to be the string 'command' parsed into an object we can pass to genworld();
+    // genworld expects an input object in the form { 'bounds': [3, 8], 'robos': [{x: 2, y: 1, o: 'W', command: 'rlrlff'}]}
+    // where bounds represents the top right corner of the plane and each robos object represents the
+    // x,y coordinates of a robot and o is a string representing their orientation. a sample object is provided below
+    //
 
-        // jordans solution parser
     const parsed = _.chain(input)
             .split('\n')
             .toArray()
-            .map(function (item, index, collection) {
+            .map((item, index, collection) => {
               if (index === 0) {
                 let splitBounds = item.split(' ');
                 bounds = [parseInt(splitBounds[0], 10), parseInt(splitBounds[1], 10)];
@@ -149,7 +147,7 @@ window.initGame = function () {
               }
             })
             .filter(undefined)
-            .reduce(function (aggregate, item) {
+            .reduce((aggregate, item) => {
               if (item.bounds) {
                 aggregate.bounds = item.bounds;
                 return aggregate;
@@ -163,34 +161,30 @@ window.initGame = function () {
     return parsed;
   };
 
-    // this function replaces teh robos after they complete one instruction
-    // from their commandset
+  const tickRobos = robos => {
+    // 
+    // task #2
+    //
+    // in this function, write business logic to move robots around the playfield
+    // the 'robos' input is an array of objects; each object has 4 parameters.
+    // This function needs to edit each robot in the array so that its x/y coordinates
+    // and orientation parameters match the robot state after 1 command has been completed. 
+    // Also, you need to remove the command the robot just completed from the command list.
+    // example input:
+    //
+    // robos[0] = {x: 2, y: 2, o: 'N', command: 'frlrlrl'}
+    //                   |- becomes -|
+    // robos[0] = {x: 2, y: 1, o: 'N', command: 'rlrlrl'} 
+    //
+    // if a robot leaves the bounds of the playfield, it should be removed from the robos
+    // array. It should leave a 'scent' in it's place. If another robot–for the duration
+    // of its commandset–encounters this 'scent', it should refuse any commands that would
+    // cause it to leave the playfield.
 
-  const tickRobos = function (robos) {
-        // 
-        // task #2
-        //
-        // in this function, write business logic to move robots around the playfield
-        // the 'robos' input is an array of objects; each object has 4 parameters.
-        // This function needs to edit each robot in the array so that its x/y coordinates
-        // and orientation parameters match the robot state after 1 command has been completed. 
-        // Also, you need to remove the command the robot just completed from the command list.
-        // example input:
-        //
-        // robos[0] = {x: 2, y: 2, o: 'N', command: 'frlrlrl'}
-        //                   |- becomes -|
-        // robos[0] = {x: 2, y: 1, o: 'N', command: 'rlrlrl'} 
-        //
-        // if a robot leaves the bounds of the playfield, it should be removed from the robos
-        // array. It should leave a 'scent' in it's place. If another robot–for the duration
-        // of its commandset–encounters this 'scent', it should refuse any commands that would
-        // cause it to leave the playfield.
+    // !== write robot logic here ==!
 
-        // !== write robot logic here ==!
-
-        // jordan solution robo state mutation
     let state = _.chain(robos)
-            .reduce(function (aggregate, robo) {
+            .reduce((aggregate, robo) => {
               const command = _.head(robo.command);
               if (utils.boundsCheck(robo)) {
                     // won't cause lost robo
@@ -221,27 +215,22 @@ window.initGame = function () {
     return state.robos;
   };
     // mission summary function
-  const missionSummary = function (robos) {
-        // task #3
-        // summarize the mission and inject the results into the DOM elements referenced in readme.md
+  const missionSummary = robos => {
+    // task #3
+    // summarize the mission and inject the results into the DOM elements referenced in readme.md
 
-        // jordans solution dom manip
-    let roboList = document.createDocumentFragment();
-    robos.forEach(function (item) {
-      utils.iter(item, roboList);
+    let [roboList, ghostList] = [document.createDocumentFragment(), document.createDocumentFragment()];
+    let aggro = [{ent: robos, list: roboList, dom: 'robots'}, 
+      {ent: ghosts, list: ghostList, dom: 'lostRobots'}];
+    aggro.map(pair => {
+      pair.ent.forEach(item => {
+        utils.iter(item, pair.list);
+      });
+      document.getElementById(pair.dom)
+              .appendChild(pair.list);
     });
-
-    let ghostList = document.createDocumentFragment();
-    ghosts.forEach(function (item) {
-      utils.iter(item, ghostList);
-    });
-    document.getElementById('robots')
-            .appendChild(roboList);
-    document.getElementById('lostRobots')
-            .appendChild(ghostList);
   };
-
-    // leave this alone please
+  // leave this alone please
   window.rover = {
     parse: parseInput,
     tick: tickRobos,
