@@ -1,157 +1,148 @@
 'use strict';
 /* globals _, engine */
 window.initGame = function () {
-    var command =
-        '5 3 \n 1 1 s\n ffffff\n 2 1 w \n flfffffrrfffffff\n 0 3 w\n LLFFFLFLFL';
-    // jordans solution bounds obj, ghosts array
-    var bounds = [],
+    const command = '5 3 \n 1 1 s\n ffffff\n 2 1 w \n flfffffrrfffffff\n 0 3 w\n LLFFFLFLFL';
+
+    let bounds = [],
         ghosts = [];
-    // jordan solution ghost
-    var Ghost = function (vals) {
-        this.x = vals.x;
-        this.y = vals.y;
-        this.o = vals.o;
-        this.command = vals.command;
-        this.report = function () {
-            return 'I died going ' + this.o.toUpperCase() + ' from coordinates: ' + this.x + ', ' + this.y;
-        };
-    };
-    // jordan solution bounds check
-    var boundsCheck = function (robo) {
-        // if we're not going forward it never matters
-        if (robo.command[0] !== 'f') {
-            return true;
+    const entities = {
+        Ghost: function (vals) {
+            this.x = vals.x;
+            this.y = vals.y;
+            this.o = vals.o;
+            this.command = vals.command;
+            this.report = function () {
+                return 'I died going ' + this.o.toUpperCase() + ' from coordinates: ' + this.x + ', ' + this.y;
+            };
+        },
+        Robo:function (commandValues) {
+            let self = this;
+            this.x = commandValues.x;
+            this.y = commandValues.y;
+            this.o = commandValues.o.toLowerCase();
+            this.command = commandValues.command.toLowerCase();
+            this.report = function () {
+                return 'Position: ' + self.x + ', ' + self.y + ' | ' + 'Orientation: ' + self.o.toUpperCase();
+            };
+            this.ticked = function () {
+                self.command = _.tail(self.command);
+            };
+            this.forward = function () {
+                switch (self.o) {
+                case 'n':
+                    self.y -= 1;
+                    break;
+                case 'e':
+                    self.x += 1;
+                    break;
+                case 's':
+                    self.y += 1;
+                    break;
+                case 'w':
+                    self.x -= 1;
+                    break;
+                }
+                self.ticked();
+            };
+            this.rr = function () {
+                switch (self.o) {
+                case 'n':
+                    self.o = 'e';
+                    break;
+                case 'e':
+                    self.o = 's';
+                    break;
+                case 's':
+                    self.o = 'w';
+                    break;
+                case 'w':
+                    self.o = 'n';
+                    break;
+                }
+                self.ticked();
+            };
+            this.rl = function () {
+                switch (self.o) {
+                case 'n':
+                    self.o = 'w';
+                    break;
+                case 'e':
+                    self.o = 'n';
+                    break;
+                case 's':
+                    self.o = 'e';
+                    break;
+                case 'w':
+                    self.o = 's';
+                    break;
+                }
+                self.ticked();
+            };
         }
-        switch (robo.o) {
-        case 'n':
-            return !(robo.y === 0);
-            break;
-        case 'e':
-            return !(robo.x === bounds[0]);
-            break;
-        case 's':
-            return !(robo.y === bounds[1]);
-            break;
-        case 'w':
-            return !(robo.x === 0);
-            break;
-        }
     };
-    // jordans solution 
-    var performCommand = function (robo, command) {
-        switch (command) {
-        case 'f':
-            robo.forward();
-            break;
-        case 'l':
-            robo.rl();
-            break;
-        case 'r':
-            robo.rr();
-            break;
-        }
-
-    };
-
-    // jordans solution - util func for summary
-    var iter = function (item, frag) {
-        var li = document.createElement('li');
-        li.textContent = item.report();
-        frag.appendChild(li);
-    };
-    // jordans solution main robot constructor
-    var Robo = function (commandValues) {
-        var self = this;
-        this.x = commandValues.x;
-        this.y = commandValues.y;
-        this.o = commandValues.o.toLowerCase();
-        this.command = commandValues.command.toLowerCase();
-        this.report = function () {
-            return 'Position: ' + self.x + ', ' + self.y + ' | ' + 'Orientation: ' + self.o.toUpperCase();
-        };
-        this.ticked = function () {
-            self.command = _.tail(self.command);
-        };
-        this.forward = function () {
-            switch (self.o) {
+    const utils = {
+        boundsCheck: function (robo) {
+            // if we're not going forward it never matters
+            if (robo.command[0] !== 'f') {
+                return true;
+            }
+            switch (robo.o) {
             case 'n':
-                self.y -= 1;
+                return !(robo.y === 0);
                 break;
             case 'e':
-                self.x += 1;
+                return !(robo.x === bounds[0]);
                 break;
             case 's':
-                self.y += 1;
+                return !(robo.y === bounds[1]);
                 break;
             case 'w':
-                self.x -= 1;
+                return !(robo.x === 0);
                 break;
             }
-            self.ticked();
-        };
-        this.rr = function () {
-            switch (self.o) {
-            case 'n':
-                self.o = 'e';
+        },
+        performCommand : function (robo, command) {
+            switch (command) {
+            case 'f':
+                robo.forward();
                 break;
-            case 'e':
-                self.o = 's';
+            case 'l':
+                robo.rl();
                 break;
-            case 's':
-                self.o = 'w';
-                break;
-            case 'w':
-                self.o = 'n';
+            case 'r':
+                robo.rr();
                 break;
             }
-            self.ticked();
-        };
-        this.rl = function () {
-            switch (self.o) {
-            case 'n':
-                self.o = 'w';
-                break;
-            case 'e':
-                self.o = 'n';
-                break;
-            case 's':
-                self.o = 'e';
-                break;
-            case 'w':
-                self.o = 's';
-                break;
-            }
-            self.ticked();
-        };
+        },
+        iter: function (item, frag) {
+            let li = document.createElement('li');
+            li.textContent = item.report();
+            frag.appendChild(li);
+        }
     };
 
-    // this function parses the input string so that we have useful names/parameters
-    // to define the playfield and the robots for subsequent steps
-
-    var parseInput = function (input) {
+    const parseInput = function (input) {
 
         //
         // task #1 
         //
-        // replace the 'parsed' var below to be the string 'command' parsed into an object we can pass to genworld();
+        // replace the 'parsed' variable below to be the string 'command' parsed into an object we can pass to genworld();
         // genworld expects an input object in the form { 'bounds': [3, 8], 'robos': [{x: 2, y: 1, o: 'W', command: 'rlrlff'}]}
         // where bounds represents the top right corner of the plane and each robos object represents the
         // x,y coordinates of a robot and o is a string representing their orientation. a sample object is provided below
         //
 
         // jordans solution parser
-        var parsed = _.chain(input)
+        const parsed = _.chain(input)
             .split('\n')
             .toArray()
             .map(function (item, index, collection) {
                 if (index === 0) {
-                    var splitBounds = item.split(' ');
+                    let splitBounds = item.split(' ');
                     bounds = [parseInt(splitBounds[0], 10), parseInt(splitBounds[1], 10)];
-                    return {
-                        bounds: bounds
-                    };
+                    return { bounds };
                 } else if (index % 2 === 0) {
-                    var prev = collection[index - 1].trim()
+                    let prev = collection[index - 1].trim()
                         .split(' ');
                     return {
                         x: parseInt(prev[0], 10),
@@ -167,7 +158,7 @@ window.initGame = function () {
                     aggregate.bounds = item.bounds;
                     return aggregate;
                 }
-                aggregate.robos.push(new Robo(item));
+                aggregate.robos.push(new entities.Robo(item));
                 return aggregate;
             }, {
                 robos: []
@@ -179,7 +170,7 @@ window.initGame = function () {
     // this function replaces teh robos after they complete one instruction
     // from their commandset
 
-    var tickRobos = function (robos) {
+    const tickRobos = function (robos) {
         // 
         // task #2
         //
@@ -202,12 +193,12 @@ window.initGame = function () {
         // !== write robot logic here ==!
 
         // jordan solution robo state mutation
-        var state = _.chain(robos)
+        let state = _.chain(robos)
             .reduce(function (aggregate, robo) {
-                var command = _.head(robo.command);
-                if (boundsCheck(robo)) {
+                const command = _.head(robo.command);
+                if (utils.boundsCheck(robo)) {
                     // won't cause lost robo
-                    performCommand(robo, command);
+                    utils.performCommand(robo, command);
                 } else if (_.filter(ghosts, {
                         x: robo.x,
                         y: robo.y
@@ -219,7 +210,7 @@ window.initGame = function () {
                     robo.ticked();
                 } else {
                     // this robo is definitely dead
-                    aggregate.ghosts.push(new Ghost(robo));
+                    aggregate.ghosts.push(new entities.Ghost(robo));
                     return aggregate;
                 }
                 aggregate.robos.push(robo);
@@ -234,19 +225,19 @@ window.initGame = function () {
         return state.robos;
     };
     // mission summary function
-    var missionSummary = function (robos) {
+    const missionSummary = function (robos) {
         // task #3
         // summarize the mission and inject the results into the DOM elements referenced in readme.md
 
         // jordans solution dom manip
-        var roboList = document.createDocumentFragment();
+        let roboList = document.createDocumentFragment();
         robos.forEach(function (item) {
-            iter(item, roboList);
+            utils.iter(item, roboList);
         });
 
-        var ghostList = document.createDocumentFragment();
+        let ghostList = document.createDocumentFragment();
         ghosts.forEach(function (item) {
-            iter(item, ghostList);
+            utils.iter(item, ghostList);
         });
         document.getElementById('robots')
             .appendChild(roboList);
