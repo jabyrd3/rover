@@ -18,34 +18,23 @@ window.initGame = function () {
     };
     // jordan solution bounds check
     var boundsCheck = function (robo) {
-        if (robo.command[0] === 'f') {
-            switch (robo.o) {
-            case 'n':
-                if (robo.y === 0) {
-                    return false;
-                }
-                return true;
-                break;
-            case 'e':
-                if (robo.x === bounds[0]) {
-                    return false;
-                }
-                return true;
-                break;
-            case 's':
-                if (robo.y === bounds[1]) {
-                    return false;
-                }
-                return true;
-                break;
-            case 'w':
-                if (robo.x === 0) {
-                    return false;
-                }
-                return true;
-            }
-        } else {
+        // if we're not going forward it never matters
+        if (robo.command[0] !== 'f') {
             return true;
+        }
+        switch (robo.o) {
+        case 'n':
+            return !(robo.y === 0);
+            break;
+        case 'e':
+            return !(robo.x === bounds[0]);
+            break;
+        case 's':
+            return !(robo.y === bounds[1]);
+            break;
+        case 'w':
+            return !(robo.x === 0);
+            break;
         }
     };
     // jordans solution 
