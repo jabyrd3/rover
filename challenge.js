@@ -195,11 +195,9 @@ window.initGame = () => {
               } else if (_.filter(ghosts, {
                 x: robo.x,
                 y: robo.y
-              })
-                    .length > 0) {
-                    // sniffer mode
+              }).length > 0) {
 
-                    // remove top command from stack
+                // remove top command from stack
                 robo.ticked();
               } else {
                     // this robo is definitely dead
@@ -222,9 +220,9 @@ window.initGame = () => {
     // task #3
     // summarize the mission and inject the results into the DOM elements referenced in readme.md
 
-    let [roboList, ghostList] = [document.createDocumentFragment(), document.createDocumentFragment()];
-    let aggro = [{ent: robos, list: roboList, dom: 'robots'}, 
-      {ent: ghosts, list: ghostList, dom: 'lostRobots'}];
+    let [roboDOM, ghostDOM] = [document.createDocumentFragment(), document.createDocumentFragment()];
+    let aggro = [{ent: robos, list: roboDOM, dom: 'robots'}, 
+      {ent: ghosts, list: ghostDOM, dom: 'lostRobots'}];
     aggro.map(pair => {
       pair.ent.forEach(item => {
         utils.iter(item, pair.list);
