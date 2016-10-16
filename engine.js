@@ -6,8 +6,7 @@ if (!window) {
 window.onload = function () {
     console.log('onload called');
     // leave this alone please
-    let game = window.initGame();
-    window.rover = window.initGame()
+    window.rover = window.initGame();
     var canvas = document.getElementById('playfield')
         .getContext('2d'),
         width = document.getElementById('playfield')
@@ -44,7 +43,7 @@ window.onload = function () {
                 }
             }
         };
-        parsedCommand.robos = game.tick(robos);
+        parsedCommand.robos = rover.tick(robos);
         placeRobos(parsedCommand.robos);
         if (renderflag) {
             render(gameWorld, parsedCommand.robos);
@@ -58,7 +57,7 @@ window.onload = function () {
                     }
                 });
                 if (finished === false) {
-                    game.summary(parsedCommand.robos);
+                    rover.summary(parsedCommand.robos);
                     runTests(gameWorld);
                 } else {
                     genworld(parsedCommand, true);
@@ -96,6 +95,6 @@ window.onload = function () {
         }
     };
     // wireup init functions for display
-    genworld(game.parse(game.command), true);
+    genworld(rover.parse(rover.command), true);
 };
 
