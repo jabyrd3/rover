@@ -229,7 +229,7 @@ window.initGame = () => {
     });
   };
   // leave this alone please
-  window.rover = {
+  return {
     parse: parseInput,
     tick: tickRobos,
     summary: missionSummary,
