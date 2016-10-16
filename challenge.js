@@ -1,9 +1,5 @@
 'use strict';
 /* globals _, engine */
-// stub window for serverside check
-if (!window) {
-    window = {};
-};
 window.initGame = function () {
     console.log('initgame');
     // you're really better off leaving this line alone, i promise.
@@ -87,7 +83,7 @@ window.initGame = function () {
     };
 
     // leave this alone please
-    window.rover = {
+    return {
         parse: parseInput,
         tick: tickRobos,
         summary: missionSummary,
