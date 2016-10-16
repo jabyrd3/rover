@@ -1,8 +1,5 @@
 'use strict';
 /* globals _, engine */
-if(!window){
-  window = {};
-}
 window.initGame = () => {
   const command = '5 3 \n 1 1 s\n ffffff\n 2 1 w \n flfffffrrfffffff\n 0 3 w\n LLFFFLFLFL';
 
