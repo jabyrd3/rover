@@ -14,7 +14,7 @@ window.initGame = function () {
         //
         // replace the 'parsed' variable below to be the string 'command' parsed into an object we can pass to genworld();
         // genworld expects an input object in the form { 'bounds': [3, 8], 'robos': [{x: 2, y: 1, o: 'W', command: 'rlrlff'}]}
-        // where bounds represents the top right corner of the plane and each robos object represents the
+        // where bounds represents the southeast corner of the plane and each robos object represents the
         // x,y coordinates of a robot and o is a string representing their orientation. a sample object is provided below
         //
 
