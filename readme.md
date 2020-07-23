@@ -70,4 +70,6 @@ The second DOM element has an ID of 'lostRobots'. I need you to build a list ite
 
 Please let me know if any directions don't make sense (jabyrd3@gmail.com). Feel free to ask questions. Feel free to break this up and hack it to hell to solve it if you want. Cheating is allowed and encouraged. Have fun.
 
+We expect the answer to be ES6+, executable in the browser natively. Please keep your entire answer in challenge.js.
+
 Please don't inject your pet module-loader or unit test framework into this. I just want to see you solve the business logic problem, and this test will be checked by an automated tool that expects the global state of the browser to be a certain way. I can't guarante that require/browserify/jspm/whatever isn't going to break that, which makes it less likely that i'll pull down your solution to read it.
